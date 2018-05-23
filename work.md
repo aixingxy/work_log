@@ -353,12 +353,19 @@ https://blog.csdn.net/u010698086/article/details/77916532
 
 ## Tensorflow固话模型
 参考：https://www.jianshu.com/p/091415b114e2
-备用参考：https://blog.csdn.net/tengxing007/article/details/55671018
+备用参考：
+https://blog.csdn.net/tengxing007/article/details/55671018
+https://blog.csdn.net/huachao1001/article/details/78502910
+https://tang.su/2017/01/export-TensorFlow-network/
+https://stackoverflow.com/questions/34343259/is-there-an-example-on-how-to-generate-protobuf-files-holding-trained-tensorflow
+https://blog.metaflow.fr/tensorflow-how-to-freeze-a-model-and-serve-it-with-a-python-api-d4f3596b3adc
 TensorFlow的saver方法一般是单一保存参数和graph，如何将参数和graph同时保存
 
 一种是通过freeze_graph把tf.train.write_graph()生成pb文件，另一种四tf.train.saver()生成chkp文件固话之后重新生成一个pb文件。
 1. freeze_graph
 这种方法需要首先使用tf.train.write_graph()以及tf.train.Saver()生成pb文件和ckpt文件
+tf.train.write_graph() # 默认情况下只导出了网络的定义（没有权重）
+tf.train.Saver().save() # 导出的文件graph_def与权重是分离的，因此需要采用别的方法
 ``` python
 with tf.Session() as sess:
     saver = tf.train.Saver()
@@ -433,3 +440,30 @@ newInput_X = tf.placeholder(tf.float32, [None, IMAGE_HEIGHT * IMAGE_WIDTH], name
 
 text_list = sesss.run(output, feed_dict={newInput_X: [captcha_image]})
 然后就是运行我们的网络，看是否可以运行吧。
+
+# 2018-05-23
+## tensorflow gfile
+https://blog.csdn.net/a373595475/article/details/79693430
+tf.gfile.Exists(filename)
+判断目录或文件是否存在，filename可为目录路径或带文件名的路径，该目录返回True，否则False
+```
+import json
+data = {
+    'name': 'ACME',
+    'shares': None,
+    'price': 542.23,
+    'bool': True
+}
+json_str = json.dumps(data)
+print(json_str)
+print(type(json_str))
+"""
+会将字典中的None自动转换成json中null，True转换成true
+{"name": "ACME", "shares": null, "price": 542.23, "bool": true}
+<class 'str'>
+"""
+```
+
+dict 转 json 中文乱码
+``` t = json.dumps(r, ensure_ascii=False) ```
+如果 不加 ensure_ascii=False  输出的 t 如果有汉字的话都默认给转换成一堆编码 如果加上的话 就都能正常显示变成了汉字
