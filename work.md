@@ -480,3 +480,6 @@ tf.get_default_graph()获得默认创建的图
 tf.Graph.as_graph_def(from_version=None, add_shapes=False)
 返回一个图的序列化的GraphDef表示序列化的GraphDef可以导入至另一个图中，import_graph_def())或者使用C++Session API
 http://lib.csdn.net/article/machinelearning/39582
+
+85 gpu Btows888*()
+测试的时候需要注释掉chinese2pinyin.py前三行
