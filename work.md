@@ -467,3 +467,16 @@ print(type(json_str))
 dict 转 json 中文乱码
 ``` t = json.dumps(r, ensure_ascii=False) ```
 如果 不加 ensure_ascii=False  输出的 t 如果有汉字的话都默认给转换成一堆编码 如果加上的话 就都能正常显示变成了汉字
+
+
+
+# 2018-05-24
+tf.train.get_checkpoint_state(checkpoint_dir,latest_filename=None)
+通过checkpoint文件找到模型文件名
+https://blog.csdn.net/changeforeve/article/details/80268522
+
+tf.get_default_graph()获得默认创建的图
+
+tf.Graph.as_graph_def(from_version=None, add_shapes=False)
+返回一个图的序列化的GraphDef表示序列化的GraphDef可以导入至另一个图中，import_graph_def())或者使用C++Session API
+http://lib.csdn.net/article/machinelearning/39582
