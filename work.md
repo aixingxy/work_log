@@ -483,3 +483,77 @@ http://lib.csdn.net/article/machinelearning/39582
 
 85 gpu Btows888*()
 测试的时候需要注释掉chinese2pinyin.py前三行
+
+## 挂在服务器目录到本地
+``` bash
+sudo apt-get install sshfs
+mkdir s152
+sshfs gpu@192.168.1.152: ./s152
+```
+## dc_tts进行测试
+1. 服务器端 运行run.sh
+  注意：将chinese2pinyin.py的前三行注释掉
+2. 客户端 运行test_server.py
+  将生成out_tts输出
+
+## 使用pyinstaller打包程序
+
+1. 安装pyinstaler
+``` bash
+sudo apt-get install pyinstaller
+```
+2. 准备*.py程序
+``` bash
+pyinstaller --onefile *.py
+```
+dist中与函数名相同的文件就是可执行的文件
+3. 更多有待深入了解其他参数
+如果用了一些库，比如下面的这个程序
+``` python
+#*-coding:utf-8 -*-
+import matplotlib.pyplot as plt
+plt.plot([1,2,3,4])
+plt.ylabel('some numbers')
+plt.show()
+```
+``` text
+/tmp/_MEIXKcTh3/matplotlib/font_manager.py:273: UserWarning: Matplotlib is building the font cache using fc-list. This may take a moment.
+Traceback (most recent call last):
+  File "test.py", line 2, in <module>
+  File "/usr/local/lib/python2.7/dist-packages/PyInstaller/loader/pyimod03_importers.py", line 396, in load_module
+    exec(bytecode, module.__dict__)
+  File "dist-packages/matplotlib/pyplot.py", line 114, in <module>
+  File "dist-packages/matplotlib/backends/__init__.py", line 32, in pylab_setup
+  File "/usr/local/lib/python2.7/dist-packages/PyInstaller/loader/pyimod03_importers.py", line 396, in load_module
+    exec(bytecode, module.__dict__)
+  File "dist-packages/matplotlib/backends/backend_tkagg.py", line 6, in <module>
+  File "dist-packages/matplotlib/externals/six.py", line 199, in load_module
+  File "dist-packages/matplotlib/externals/six.py", line 113, in _resolve
+  File "dist-packages/matplotlib/externals/six.py", line 80, in _import_module
+ImportError: No module named Tkinter
+[15516] Failed to execute script test
+```
+先跳出打包问题
+Python下"No module named _tkinter"问题解决过程总结
+https://blog.csdn.net/blueheart20/article/details/78763208
+在代码中import报错的模块，然后重新打包
+``` python
+#*-coding:utf-8 -*-
+# import tkinter
+# import FileDialog
+import matplotlib.pyplot as plt
+plt.plot([1,2,3,4])
+plt.ylabel('some numbers')
+plt.show()
+
+```
+``` bash
+pyinstaller --onefile test.py --hidden-import tkinter --hidden-import FileDialog
+```
+
+
+
+有待学习的模块
+logging
+argparse
+http://wiki.jikexueyuan.com/project/explore-python/Standard-Modules/argparse.html
