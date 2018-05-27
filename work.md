@@ -359,6 +359,7 @@ https://blog.csdn.net/huachao1001/article/details/78502910
 https://tang.su/2017/01/export-TensorFlow-network/
 https://stackoverflow.com/questions/34343259/is-there-an-example-on-how-to-generate-protobuf-files-holding-trained-tensorflow
 https://blog.metaflow.fr/tensorflow-how-to-freeze-a-model-and-serve-it-with-a-python-api-d4f3596b3adc
+https://blog.metaflow.fr/tensorflow-saving-restoring-and-mixing-multiple-models-c4c94d5d7125
 TensorFlow的saver方法一般是单一保存参数和graph，如何将参数和graph同时保存
 
 一种是通过freeze_graph把tf.train.write_graph()生成pb文件，另一种四tf.train.saver()生成chkp文件固话之后重新生成一个pb文件。
@@ -552,8 +553,60 @@ pyinstaller --onefile test.py --hidden-import tkinter --hidden-import FileDialog
 ```
 
 
-
+# 2018-5-26
 有待学习的模块
 logging
 argparse
 http://wiki.jikexueyuan.com/project/explore-python/Standard-Modules/argparse.html
+
+查看系统中的shell
+``` bash
+➜  shell_learning git:(master) ✗ cat /etc/shells
+# List of acceptable shells for chpass(1).
+# Ftpd will not allow users to connect who are not using
+# one of these shells.
+
+/bin/bash
+/bin/csh
+/bin/ksh
+/bin/sh
+/bin/tcsh
+/bin/zsh
+```
+
+设置默认的shell
+``` bash
+➜  shell_learning git:(master) ✗ chsh -s /bin/sh
+Changing shell for xxy.
+Password for xxy:
+```
+重启终端，查看当前终端
+``` bash
+promote:~ xxy$ echo $SHELL
+/bin/sh
+```
+
+
+# 2018-5-27
+连接远程服务器报错
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!
+Someone could be eavesdropping on you right now (man-in-the-middle attack)!
+It is also possible that a host key has just been changed.
+The fingerprint for the ECDSA key sent by the remote host is
+SHA256:7brOfHf/+6p+fJOHWRXyJ4OuTzcr2YbfXvf285hvYOw.
+Please contact your system administrator.
+Add correct host key in /Users/xxy/.ssh/known_hosts to get rid of this message.
+Offending ECDSA key in /Users/xxy/.ssh/known_hosts:1
+ECDSA host key for 10.254.230.10 has changed and you have requested strict checking.
+Host key verification failed.
+分析原因，第一次使用ssh连接服务器时，会产生一个认证，存储在客户端上的known_hosts，服务器重装过，ssh公钥前后不相同，就回报错：
+解决方法
+``` bash
+➜  ~ ssh-keygen -R 10.254.230.10
+# Host 10.254.230.10 found: line 1
+/Users/xxy/.ssh/known_hosts updated.
+Original contents retained as /Users/xxy/.ssh/known_hosts.old
+```
