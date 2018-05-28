@@ -610,3 +610,15 @@ Host key verification failed.
 /Users/xxy/.ssh/known_hosts updated.
 Original contents retained as /Users/xxy/.ssh/known_hosts.old
 ```
+
+Linux统计文件夹、文件数量
+``` bash
+# 查看当前目录下的文件数量（不包含子目录中的文件）
+ls -l | grep "^-" | wc -l
+# 查看当前目录下的文件数量（包含子目录中的文件）R：表示子目录
+ls -lR | grep "^-" | wc -l
+# 查看当前目录下的文件夹数量，如果要查看子目录中的目录，加上R
+ls -l | grep "^d" | wc -l
+# 查询当前路径下以”2016“开头的目录下的全部文件数量
+ls -lR 2016*/ | grep "^-" | wc -l
+```
