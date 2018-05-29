@@ -474,9 +474,11 @@ dict 转 json 中文乱码
 # 2018-05-24
 tf.train.get_checkpoint_state(checkpoint_dir,latest_filename=None)
 通过checkpoint文件找到模型文件名
-https://blog.csdn.net/changeforeve/article/details/80268522
-
-tf.get_default_graph()获得默认创建的图
+https://blog.csdn.net/changeforeve/article/details/
+有两个返回值
+model_checkpoint_paths
+all_model_checkpoint_paths
+tf.get_default_graph() 获得当前默认计算图
 
 tf.Graph.as_graph_def(from_version=None, add_shapes=False)
 返回一个图的序列化的GraphDef表示序列化的GraphDef可以导入至另一个图中，import_graph_def())或者使用C++Session API
@@ -501,7 +503,7 @@ sshfs gpu@192.168.1.152: ./s152
 
 1. 安装pyinstaler
 ``` bash
-sudo apt-get install pyinstaller
+pip install pyinstaller
 ```
 2. 准备*.py程序
 ``` bash
@@ -621,4 +623,48 @@ ls -lR | grep "^-" | wc -l
 ls -l | grep "^d" | wc -l
 # 查询当前路径下以”2016“开头的目录下的全部文件数量
 ls -lR 2016*/ | grep "^-" | wc -l
+```
+
+# 2018-5-29
+在ubuntu上删除anaconda
+1. 删除整个anaconda`rm -rf anaconda2`
+2. 清理.bashrc
+
+打包
+~/anaconda2/bin/pyinstaller -F  --clean pack_tf_add.py
+
+运行
+cd dist
+./pack_tf_add --num=1
+
+报错
+Traceback (most recent call last):
+  File "pack_tf_add.py", line 4, in <module>
+  File "/private/var/folders/88/1jw_0lt50tsb4n08mg_493040000gn/T/pip-build-3m08rf/pyinstaller/PyInstaller/loader/pyimod03_importers.py", line 396, in load_module
+  File "site-packages/tensorflow/__init__.py", line 24, in <module>
+  File "/private/var/folders/88/1jw_0lt50tsb4n08mg_493040000gn/T/pip-build-3m08rf/pyinstaller/PyInstaller/loader/pyimod03_importers.py", line 396, in load_module
+  File "site-packages/tensorflow/python/__init__.py", line 104, in <module>
+  File "/private/var/folders/88/1jw_0lt50tsb4n08mg_493040000gn/T/pip-build-3m08rf/pyinstaller/PyInstaller/loader/pyimod03_importers.py", line 396, in load_module
+  File "site-packages/tensorflow/python/platform/test.py", line 53, in <module>
+  File "/private/var/folders/88/1jw_0lt50tsb4n08mg_493040000gn/T/pip-build-3m08rf/pyinstaller/PyInstaller/loader/pyimod03_importers.py", line 396, in load_module
+  File "site-packages/mock/__init__.py", line 2, in <module>
+  File "/private/var/folders/88/1jw_0lt50tsb4n08mg_493040000gn/T/pip-build-3m08rf/pyinstaller/PyInstaller/loader/pyimod03_importers.py", line 396, in load_module
+  File "site-packages/mock/mock.py", line 71, in <module>
+  File "site-packages/pbr/version.py", line 462, in semantic_version
+  File "site-packages/pbr/version.py", line 449, in _get_version_from_pkg_resources
+  File "site-packages/pbr/packaging.py", line 812, in get_version
+Exception: Versioning for this project requires either an sdist tarball, or access to an upstream git repository. It's also possible that there is a mismatch between the package name in setup.cfg and the argument given to pbr.version.VersionInfo. Project name mock was given, but was not able to be found.
+
+解决方法：
+https://blog.csdn.net/laocaibcc229/article/details/78570017
+https://github.com/pyinstaller/pyinstaller/issues/2883
+``` python
+# 添加到首行
+import os
+os.environ["PBR_VERSION"]='3.1.1' #要去查询自己的版本
+```
+
+查看pbr版本
+``` bash
+pbr --version # 3.1.1
 ```
