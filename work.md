@@ -668,3 +668,336 @@ os.environ["PBR_VERSION"]='3.1.1' #要去查询自己的版本
 ``` bash
 pbr --version # 3.1.1
 ```
+# 2018.07.02
+1. 安装新机器
+2. 接受新任务 merlin
+
+Github链接： https://github.com/CSTR-Edinburgh/merlin
+
+Gitlab链接： git@192.168.1.68:maozhiqiang/guiji_mellin.git
++ 任务描述
+  - 使用DNN的tts
+
++ 任务现状：
+  - 只在CPU行运行
+  - 已经有了初步的效果
+
++ 任务目标：
+  - 结合wave-net或decoder，期望获得更好的效果
+
+## merlin在本机安装
+
++ installation
+  - 跟着安装信息安装
+``` bash
+xxy@xxy:~/guiji_mellin$ sudo pip3 install bandmat
+
+...
+    bandmat/full.c:8:22: fatal error: pyconfig.h: 没有那个文件或目录
+    compilation terminated.
+    error: command 'x86_64-linux-gnu-gcc' failed with exit status 1
+
+    ----------------------------------------
+# 参考 https://blog.csdn.net/qq_23729557/article/details/78956602
+sudo apt-get install python-all-dev python3-all-dev
+
+```
+
+## merlin在服务器上安装
+``` bash
+xxy@xxy:~$ ssh xxy@192.168.1.152
+
+xingxy@s152:~$ git clone git@192.168.1.68:maozhiqiang/guiji_mellin.git
+fatal: could not create work tree dir 'guiji_mellin': No space left on device
+
+# 查看磁盘使用情况，发现是xingxy用户占用空间过大
+xingxy@s152:~$ df -h
+Filesystem      Size  Used Avail Use% Mounted on
+udev             32G     0   32G   0% /dev
+tmpfs           6.3G  683M  5.7G  11% /run
+/dev/sda1       167G   38G  121G  24% /
+tmpfs            32G     0   32G   0% /dev/shm
+tmpfs           5.0M  4.0K  5.0M   1% /run/lock
+tmpfs            32G     0   32G   0% /sys/fs/cgroup
+/dev/sdb        3.6T  3.5T     0 100% /devdata
+tmpfs           6.3G     0  6.3G   0% /run/user/1005
+tmpfs           6.3G     0  6.3G   0% /run/user/1004
+tmpfs           6.3G     0  6.3G   0% /run/user/1007
+tmpfs           6.3G     0  6.3G   0% /run/user/1001
+
+# 查看文件夹下文件大小，需要权限，所有没有办法成功显示子文件夹大小
+xingxy@s152:~$ du -h --max-depth=1
+1.9M	./.nv
+2.5G	./Downloads
+305M	./LJ128
+16K	./.ssh
+424M	./.cache
+160M	./net1
+1.3G	./Projects
+5.5M	./mels
+3.5G	./anaconda2
+25M	./.local
+8.4G	./MTTS
+8.0K	./.keras
+8.0K	./.config
+54M	./guiji_mellin
+5.1G	./anaconda3
+1.1G	./Neural_Network_Voices
+32K	./Documents
+264M	./mags
+237M	./zhao_1000
+12K	./.conda
+24G	.
+
+# 安装缺省
+sudo apt install csh
+sudo apt install realpath
+sudo apt install autotools-dev
+sudo apt install automake
+
+
+pip install numpy scipy matplotlib lxml theano bandmat
+# 运行结果
+......
+2018-07-02 17:15:13,085 CRITICAL     subprocess:       stderr: b'/bin/sh: 1: /devdata/home/xingxy/Projects/merlin/tools/bin/SPTK-3.9/x2x: not found\n'
+2018-07-02 17:15:13,085 CRITICAL     subprocess:       stdout: b''
+2018-07-02 17:15:13,085 CRITICAL     subprocess: OSError for echo 1 1 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4  | /devdata/home/xingxy/Projects/merlin/tools/bin/SPTK-3.9/x2x +af > /devdata/home/xingxy/Projects/merlin/egs/slt_arctic/s1/experiments/slt_arctic_demo/test_synthesis/wav/weight
+Traceback (most recent call last):
+  File "/devdata/home/xingxy/Projects/merlin/src/run_merlin.py", line 1320, in <module>
+    main_function(cfg)
+  File "/devdata/home/xingxy/Projects/merlin/src/run_merlin.py", line 989, in main_function
+    generate_wav(gen_dir, gen_file_id_list, cfg)     # generated speech
+  File "/devdata/home/xingxy/Projects/merlin/src/utils/generate.py", line 324, in generate_wav
+    wavgen_straight_type_vocoder(gen_dir, file_id_list, cfg, logger)
+  File "/devdata/home/xingxy/Projects/merlin/src/utils/generate.py", line 236, in wavgen_straight_type_vocoder
+    post_filter(files['mgc'], mgc_file_name, cfg.mgc_dim, pf_coef, fw_coef, co_coef, fl_coef, gen_dir, cfg)
+  File "/devdata/home/xingxy/Projects/merlin/src/utils/generate.py", line 141, in post_filter
+    .format(line=line, x2x=SPTK['X2X'], weight=os.path.join(gen_dir, 'weight')))
+  File "/devdata/home/xingxy/Projects/merlin/src/utils/generate.py", line 93, in run_process
+    raise OSError
+OSError
+Lock freed
+deleting intermediate synthesis files...
+synthesized audio files are in: experiments/slt_arctic_demo/test_synthesis/wav
+All successfull!! Your demo voice is ready :)
+
+# 将theno降级，也失败了
+
+nvidia-smi -l 1
+
+# 使用git@192.168.1.68:maozhiqiang/guiji_mellin.git
+
+```
+
+screen 的使用detatch
+
+screen 进入screen
+
+先按CTRL+a，然后按d(detach)，离开screen的session
+
+screen -ls可以看到现有的screen的会话
+
+screen -r <session name>
+
+## 使用自己的数据跑了一夜的报错信息
+``` text
+2018-07-02 20:45:34,410 INFO           labels  : loaded /devdata/home/xingxy/guiji_mellin/egs/mandarin_voice/s1/experiments/mandarin_voice/test_synthesis/gen-lab/400.lab,  40 labels
+2018-07-02 20:45:34,454 INFO           labels  : loaded /devdata/home/xingxy/guiji_mellin/egs/mandarin_voice/s1/experiments/mandarin_voice/test_synthesis/gen-lab/2250.lab,  49 labels
+2018-07-02 20:45:34,493 INFO           labels  : loaded /devdata/home/xingxy/guiji_mellin/egs/mandarin_voice/s1/experiments/mandarin_voice/test_synthesis/gen-lab/1360.lab,  68 labels
+WARNING: no silence found!
+WARNING: no silence found!
+WARNING: no silence found!
+2018-07-02 20:45:34,718 INFO      acoustic_norm: Loaded min max values from the trained data for feature dimension of 471
+2018-07-02 20:45:35,705 INFO           main    : label dimension is 471
+2018-07-02 20:45:35,705 INFO           main    : generating from DNN
+Traceback (most recent call last):
+  File "/devdata/home/xingxy/guiji_mellin/src/run_merlin.py", line 1320, in <module>
+    main_function(cfg)
+  File "/devdata/home/xingxy/guiji_mellin/src/run_merlin.py", line 945, in main_function
+    dnn_generation(test_x_file_list, nnets_file_name, lab_dim, cfg.cmp_dim, gen_file_list, reshape_io)
+  File "/devdata/home/xingxy/guiji_mellin/src/run_merlin.py", line 420, in dnn_generation
+    dnn_model = pickle.load(open(nnets_file_name, 'rb'))
+FileNotFoundError: [Errno 2] No such file or directory: '/devdata/home/xingxy/guiji_mellin/egs/mandarin_voice/s1/experiments/mandarin_voice/acoustic_model/nnets_model/feed_forward_6_tanh.model'
+Lock freed
+deleting intermediate synthesis files...
+synthesized audio files are in: experiments/mandarin_voice/test_synthesis/wav
+All successfull!! Your demo voice is ready :)
+done...!
+```
+# 2018.07.02
+
+# 开始分开运行
+``` test
+# 01_setup.sh 中第67行需要修改文件数量
+xingxy@s152:~/guiji_mellin/egs/mandarin_voice/s1$ ./01_setup.sh "mandarin_voice"
+Step 1:
+Merlin default voice settings configured in "conf/global_settings.cfg"
+Modify these params as per your data...
+eg., sampling frequency, no. of train files etc.,
+setup done...!
+
+xingxy@s152:~/guiji_mellin/egs/mandarin_voice/s1$ ./02_prepare_labels.sh database/labels database/prompt-lab
+Step 2:
+Copying labels to duration and acoustic data directories...
+done...!
+
+
+xingxy@s152:~/guiji_mellin/egs/mandarin_voice/s1$ ./03_prepare_acoustic_features.sh database/wav database/feats
+
+...
+Analysis
+DIO: 93 [msec]
+StoneMask: 80 [msec]
+CheapTrick: 443 [msec]
+D4C: 301 [msec]
+1319 1024 1
+complete.
+Running REAPER f0 extraction...
+Residual symmetry: P:1337.396729  N:1819.895142  MEAN:-0.016800
+You should have your features ready in: database/feats
+--- Feature extraction completion time: 14 min. 19 sec ---
+Copying features to acoustic data directory...
+done...!
+
+
+xingxy@s152:~/guiji_mellin/egs/mandarin_voice/s1$ ./04_prepare_conf_files.sh conf/global_settings.cfg
+Step 4:
+preparing config files for acoustic, duration models...
+Duration configuration settings stored in conf/duration_mandarin_voice.conf
+Acoustic configuration settings stored in conf/acoustic_mandarin_voice.conf
+preparing config files for synthesis...
+Duration configuration settings stored in conf/test_dur_synth_mandarin_voice.conf
+Acoustic configuration settings stored in conf/test_synth_mandarin_voice.conf
+
+
+
+xingxy@s152:~/guiji_mellin/egs/mandarin_voice/s1$ nohup ./05_train_duration_model.sh conf/duration_mandarin_voice.conf > Duration_Model.out 2>&1 &
+
+xingxy@s152:~/guiji_mellin/egs/mandarin_voice/s1$ nohup ./06_train_acoustic_model.sh conf/acoustic_mandarin_voice.conf  > Acoustic_Mode.out 2>&1 &
+
+...
+ata/home/xingxy/guiji_mellin/egs/mandarin_voice/s1/experiments/mandarin_voice/acoustic_model/gen/feed_forward_6_tanh/9.cmp
+2018-07-03 18:03:39,164 INFO           main    : reconstructing waveform(s)
+2018-07-03 18:03:39,165 INFO     wav_generation: creating waveform for    1 of   21: 9981
+2018-07-03 18:03:42,296 INFO     wav_generation: creating waveform for    2 of   21: 9982
+2018-07-03 18:03:44,021 INFO     wav_generation: creating waveform for    3 of   21: 9983
+2018-07-03 18:03:46,892 INFO     wav_generation: creating waveform for    4 of   21: 9984
+2018-07-03 18:03:49,321 INFO     wav_generation: creating waveform for    5 of   21: 9985
+2018-07-03 18:03:52,208 INFO     wav_generation: creating waveform for    6 of   21: 9986
+2018-07-03 18:03:55,097 INFO     wav_generation: creating waveform for    7 of   21: 9987
+2018-07-03 18:03:58,145 INFO     wav_generation: creating waveform for    8 of   21: 9988
+2018-07-03 18:04:00,369 INFO     wav_generation: creating waveform for    9 of   21: 9989
+2018-07-03 18:04:03,558 INFO     wav_generation: creating waveform for   10 of   21: 9990
+2018-07-03 18:04:07,187 INFO     wav_generation: creating waveform for   11 of   21: 9991
+2018-07-03 18:04:09,802 INFO     wav_generation: creating waveform for   12 of   21: 9992
+2018-07-03 18:04:12,838 INFO     wav_generation: creating waveform for   13 of   21: 9993
+2018-07-03 18:04:15,508 INFO     wav_generation: creating waveform for   14 of   21: 9994
+2018-07-03 18:04:18,219 INFO     wav_generation: creating waveform for   15 of   21: 9995
+2018-07-03 18:04:20,921 INFO     wav_generation: creating waveform for   16 of   21: 9996
+2018-07-03 18:04:23,017 INFO     wav_generation: creating waveform for   17 of   21: 9997
+2018-07-03 18:04:24,641 INFO     wav_generation: creating waveform for   18 of   21: 9998
+2018-07-03 18:04:28,096 INFO     wav_generation: creating waveform for   19 of   21: 9999
+2018-07-03 18:04:29,810 INFO     wav_generation: creating waveform for   20 of   21: 99
+2018-07-03 18:04:32,722 INFO     wav_generation: creating waveform for   21 of   21: 9
+2018-07-03 18:04:36,497 INFO           main    : calculating MCD
+2018-07-03 18:04:39,236 INFO           main    : Develop: DNN -- MCD: 4.471 dB; BAP: 0.223 dB; F0:- RMSE: 25.420 Hz; CORR: 0.890; VUV: 5.166%
+2018-07-03 18:04:39,236 INFO           main    : Test   : DNN -- MCD: 4.623 dB; BAP: 0.219 dB; F0:- RMSE: 27.146 Hz; CORR: 0.877; VUV: 5.463%
+Lock freed
+
+xingxy@s152:~/guiji_mellin/egs/mandarin_voice/s1$ ./07_run_merlin.sh conf/test_dur_synth_mandarin_voice.conf conf/test_synth_mandarin_voice.conf
+...
+18-07-03 18:06:15,538 INFO           main    : reconstructing waveform(s)
+2018-07-03 18:06:15,538 INFO     wav_generation: creating waveform for    1 of    5: 1360
+2018-07-03 18:06:18,140 INFO     wav_generation: creating waveform for    2 of    5: 2250
+2018-07-03 18:06:20,191 INFO     wav_generation: creating waveform for    3 of    5: 400
+2018-07-03 18:06:21,826 INFO     wav_generation: creating waveform for    4 of    5: 6001
+2018-07-03 18:06:22,872 INFO     wav_generation: creating waveform for    5 of    5: 6002
+Lock freed
+deleting intermediate synthesis files...
+synthesized audio files are in: experiments/mandarin_voice/test_synthesis/wav
+All successfull!! Your demo voice is ready :)
+```
+## 如果希望在已有模型上继续训练，修改duration_mandarin_voice.conf，同理也要修改 acoustic_mandarin_voice.conf
+xingxy@s152:~/guiji_mellin/egs/mandarin_voice/s1/conf$ vim duration_mandarin_voice.conf
+在[Architecture] 下面添加start_from_trained_model: feed_forward_6_tanh.model的绝对路径
+
+
++ duration_mandarin_voice.conf
+``` python
+...
+[Architecture]
+switch_to_tensorflow: False
+switch_to_keras: False
+hidden_layer_size  : [1024, 1024, 1024, 1024, 1024, 1024]
+hidden_layer_type  : ['TANH', 'TANH', 'TANH', 'TANH', 'TANH', 'TANH']
+
+# start_from_trained_model:/devdata/home/xingxy/guiji_mellin/egs/mandarin_vo    ice/s1/experiments/mandarin_voice/duration_model/nnets_model/feed_forward_6_tanh.model
+...
+```
+
++ acoustic_mandarin_voice.conf
+``` python
+[Architecture]
+switch_to_tensorflow: False
+switch_to_keras: False
+hidden_layer_size  : [1024, 1024, 1024, 1024, 1024, 1024]
+hidden_layer_type  : ['TANH', 'TANH', 'TANH', 'TANH', 'TANH', 'TANH']
+model_file_name: feed_forward_6_tanh
+
+ # start_from_trained_model:/devdata/home/xingxy/guiji_mellin/egs/mandarin_voice/s1/experiments/mandarin_voice/acoustic_model/nnets_model/feed_forward_6_tanh.model
+```
+
+## 如果希望不重新加载lab， 将
++ duration_mandarin_voice.conf
+``` python
+NORMLAB  : False
+MAKEDUR  : False
+MAKECMP  : False
+NORMCMP  : False
+```
+
++ acoustic_mandarin_voice.conf
+``` python
+NORMLAB  : False
+MAKECMP  : False
+NORMCMP  : False
+```
+## 基于用户修改 Python 版本：
+
+https://www.cnblogs.com/rexyan/p/7485135.html
+
+修改制定用户的python版本，打开用户 ~/.bashrc，添加下面代码，再`source ~/.bashrc`生效
+``` bash
+alias python='full path to python'
+```
+使用 `python -V`查看版本
+
+## 后台运行程序
+nohup command>/dev/null 2>&1 &
+
+## ln
+``` bash
+# 使用方法
+ln -s 源文件 目标文件
+# 删除方法
+rm -rf 链接名
+```
+
+## logging入门
+https://blog.csdn.net/qq_26886929/article/details/54091986
+
+## shell 学习
+https://www.cnblogs.com/davygeek/p/5670212.html
+
+| 变量 | 含义 |
+| - | - |
+| $0 | 当前脚本文件名  |
+| $n | 传递给脚本或函数的参数，n表示一个数字，表示第几个参数，例如，第一个参数是$1，第二个参数$2 |
+| $# | 传递给脚本或函数的参数个数  |
+| $* | 传递给脚本或函数的所有参数  |
+| $@ | 传递给脚本或函数的所有参数，被双引号""包含时，与$*有不同  |
+| $? | 上个命令的推出状态，或函数的返回值  |
+| $$ | 当前Shell进程ID，对于shell脚本，就是脚本呃所在的进程ID  |
+
+
+#
