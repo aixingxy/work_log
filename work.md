@@ -756,7 +756,7 @@ sudo apt install autotools-dev
 sudo apt install automake
 
 
-pip install numpy scipy matplotlib lxml theano bandmat
+pip2 install numpy scipy matplotlib lxml theano bandmat
 # 运行结果
 ......
 2018-07-02 17:15:13,085 CRITICAL     subprocess:       stderr: b'/bin/sh: 1: /devdata/home/xingxy/Projects/merlin/tools/bin/SPTK-3.9/x2x: not found\n'
@@ -999,5 +999,26 @@ https://www.cnblogs.com/davygeek/p/5670212.html
 | $? | 上个命令的推出状态，或函数的返回值  |
 | $$ | 当前Shell进程ID，对于shell脚本，就是脚本呃所在的进程ID  |
 
+# ubuntu下安装配置shadowsock
+https://blog.csdn.net/liwei1205/article/details/78818190
 
-#
+# 2018.07.04
+
+## 接到新任务 Parallel WaveNet:Fast High-Fidelity Speech Synthesis
++ 目标 复现论文 实现Parallel WaveNet
+
++ 现状
+
+参考 https://github.com/bfs18/nsynth_wavenet
+
+目前项目效果不太好，希望改进
+
++ 打算从wavenet入手，查阅资料：
+1. 谷歌WaveNet 源码详解（来自知乎）https://zhuanlan.zhihu.com/p/24568596
+2. wavenet的具体输入、输出是什么，训练过程是怎样进行的？(来自知乎) https://www.zhihu.com/question/56017966/answer/253599651
+3. 谷歌WaveNet如何通过深度学习方法来生成声音？ https://zhuanlan.zhihu.com/p/24317897
+4. WaveNet原文 https://arxiv.org/pdf/1609.03499.pdf
+5. 机器学习之语音生成&&音乐生成 (csdn) https://blog.csdn.net/ljp1919/article/details/52764913
+6. 机器学习之由wavenet涉及到的基础知识(补充下学习ing) https://blog.csdn.net/ljp1919/article/details/52884376
+7. WaveNet原理和代码分析 https://blog.csdn.net/zsssrs/article/details/79892523
+8. WaveNet Blog https://deepmind.com/blog/wavenet-generative-model-raw-audio/
