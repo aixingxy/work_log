@@ -1,0 +1,6 @@
+## 挂在服务器目录到本地
+```bash
+sudo apt-get install sshfs
+mkdir s152
+sshfs gpu@192.168.1.152: ./s152
+```
