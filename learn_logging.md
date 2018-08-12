@@ -56,3 +56,42 @@ logger.debug("this is dubug in test2")
 |%(process)s|进程ID。可能没有 |
 |%(message)s|`用户输出的消息` |
 
+
+  程序员可以使用三种方式配置 logging：
+
+**1.使用 Python 代码调用前面提到的配置类方法来显式地创建 loggers，handlers，formatters** 
+
+**2.创建一个 logging 的配置文件，然后使用 fileConfig() 来读取该文件**
+
+**3.创建一个保存了配置信息的字典，然后把它传递给 dictConfig() 函数**
+
+下面的示例中，使用 Python 代码配置了一个非常简单的 logger，一个控制台处理器，和一个简单的格式化器：
+```python
+import logging
+
+# create logger logger = logging.getLogger('simple_example')
+logger.setLevel(logging.DEBUG)
+
+# create console handler and set level to debug ch = logging.StreamHandler()
+ch.setLevel(logging.DEBUG)
+
+# create formatter formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+# add formatter to ch ch.setFormatter(formatter)
+
+# add ch to logger logger.addHandler(ch)
+
+# 'application' code logger.debug('debug message')
+logger.info('info message')
+logger.warning('warn message')
+logger.error('error message')
+logger.critical('critical message')
+```
+从命令行运行上面的代码，会产生如下输出：
+```text
+2018-08-12 13:48:03,982 - simple_example - DEBUG - debug message
+2018-08-12 13:48:03,982 - simple_example - INFO - info message
+2018-08-12 13:48:03,982 - simple_example - WARNING - warn message
+2018-08-12 13:48:03,982 - simple_example - ERROR - error message
+2018-08-12 13:48:03,982 - simple_example - CRITICAL - critical message
+```
