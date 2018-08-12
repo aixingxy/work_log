@@ -67,6 +67,7 @@ logger.debug("this is dubug in test2")
 
 下面的示例中，使用 Python 代码配置了一个非常简单的 logger，一个控制台处理器，和一个简单的格式化器：
 ```python
+# test.py
 import logging
 
 # create logger logger = logging.getLogger('simple_example')
@@ -94,4 +95,64 @@ logger.critical('critical message')
 2018-08-12 13:48:03,982 - simple_example - WARNING - warn message
 2018-08-12 13:48:03,982 - simple_example - ERROR - error message
 2018-08-12 13:48:03,982 - simple_example - CRITICAL - critical message
+```
+
+
+使用fileConfig
+```python
+# test.py
+import logging.config
+
+logging.config.fileConfig('logging.conf')
+
+# create logger logger = logging.getLogger('simpleExample')
+
+# 'application' code logger.debug('debug message')
+logger.info('info message')
+logger.warning('warn message')
+logger.error('error message')
+logger.critical('critical message')
+```
+
+
+logging.conf中的内容
+```text
+# logging.conf
+[loggers]
+keys=root
+
+[handlers]
+keys=fileHandler,consoleHandler
+
+[formatters]
+keys=simpleFormatter
+
+[logger_root]
+level=DEBUG
+handlers=fileHandler,consoleHandler
+
+[handler_fileHandler]
+class=logging.FileHandler
+formatter=simpleFormatter
+args=('xxy.log','a')
+
+[handler_consoleHandler]
+class=logging.StreamHandler
+formatter=simpleFormatter
+args=()
+
+[formatter_simpleFormatter]
+class=logging.Formatter
+format=%(asctime)s - %(name)s - %(levelname)s - %(message)s
+datefmt=%Y-%m-%d %H:%M:%S
+```
+
+
+从命令行运行上面的代码，会产生如下输出：
+```text
+2018-08-12 15:39:54 - simpleExample - DEBUG - debug message
+2018-08-12 15:39:54 - simpleExample - INFO - info message
+2018-08-12 15:39:54 - simpleExample - WARNING - warn message
+2018-08-12 15:39:54 - simpleExample - ERROR - error message
+2018-08-12 15:39:54 - simpleExample - CRITICAL - critical message
 ```
