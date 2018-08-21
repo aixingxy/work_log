@@ -1,4 +1,4 @@
-记录一下使用pycharm调用远程服务器编译环境报ImportError的解决过程：
+# 记录一下使用pycharm调用远程服务器编译环境报ImportError的解决过程：
 ```text
 ssh://xx@192.168.1.xxx:22/usr/bin/python3 -u /home/xxx/pa/preprocess_tacotron.py
 Traceback (most recent call last):
