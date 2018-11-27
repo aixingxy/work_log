@@ -2,6 +2,7 @@ cd ~
 mkdir ~/.pip
 
 cat > ~/.pip/pip.conf << EOF
+
 [global]
 
 timeout = 6000
