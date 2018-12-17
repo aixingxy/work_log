@@ -16,4 +16,5 @@ use-mirrors = true
 mirrors = https://pypi.doubanio.com/simple/
 
 trusted-host = pypi.douban.com
+
 EOF
