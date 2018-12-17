@@ -1,4 +1,5 @@
 cd ~
+
 mkdir ~/.pip
 
 cat > ~/.pip/pip.conf << EOF
