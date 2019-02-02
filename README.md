@@ -5,3 +5,4 @@
 - [ ] 3. 尚硅谷NLP课程
 - [ ] 4. LeetCode刷一遍(C, C++, Python)
 - [ ] 5. PRML(python)
+- [ ] 6. Docker
