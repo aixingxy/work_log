@@ -1,0 +1,13 @@
+# screen的使用方式
+[1] 创建新进程，如test_screen
+screen -S test_screen
+此时就进入了新的screen
+
+[2] 在新screen中训练数据
+
+[3] 安装ctrl+a + d 离开当前的screen
+
+[4] 下次ssh进去服务器后
+使用screen -ls 查看detach的终端
+使用screen -r test_screen再次进入之前的终端
+当终端已经使用结束，可以使用exit退出
